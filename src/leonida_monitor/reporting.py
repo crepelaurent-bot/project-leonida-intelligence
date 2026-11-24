@@ -104,7 +104,7 @@ def update_changelog(path, events):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     existing = path.read_text(encoding="utf-8") if path.exists() else "# Intelligence changelog\n\n"
-    known = set(re.findall(r"event-id: ([^\\s]+)", existing))
+    known = set(re.findall(r"event-id: ([^\s]+)", existing))
     new = [e for e in events if e["event_key"] not in known]
     if not new:
         return False
