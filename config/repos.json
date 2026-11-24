@@ -1,0 +1,33 @@
+{
+  "repositories": [
+    {
+      "full_name": "ProjectLeonida/Leonida",
+      "role": "primary",
+      "relationship": "first_party_primary",
+      "notes": "Canonical organisation repository; former ItsNotRexed/Leonida path redirects here."
+    },
+    {
+      "full_name": "navanem/gta6-leonida-atlas",
+      "role": "mapping",
+      "relationship": "independent_community",
+      "notes": "Independent community atlas; no first-party affiliation verified."
+    },
+    {
+      "full_name": "wpenistone/leonida_gis",
+      "role": "gis",
+      "relationship": "independent_community",
+      "notes": "Independent GIS/cartography project; no first-party affiliation verified."
+    },
+    {
+      "full_name": "fbritoferreira/gta6",
+      "role": "mapping_data",
+      "relationship": "independent_community",
+      "notes": "Independent open map data project; no first-party affiliation verified."
+    }
+  ],
+  "poll": {
+    "per_page": 100,
+    "history_pages_on_bootstrap": 0,
+    "max_items_per_endpoint": 5000
+  }
+}
