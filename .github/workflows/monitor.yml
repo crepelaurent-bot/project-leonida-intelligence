@@ -10,11 +10,6 @@ on:
         required: false
         type: boolean
         default: false
-  push:
-    paths:
-      - "config/**"
-      - "src/**"
-      - ".github/workflows/monitor.yml"
 
 permissions:
   contents: write
