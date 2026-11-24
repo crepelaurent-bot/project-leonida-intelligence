@@ -1,0 +1,58 @@
+name: Project Leonida intelligence monitor
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      bootstrap:
+        description: "Fetch initial history (can consume many API requests)"
+        required: false
+        type: boolean
+        default: false
+  push:
+    paths:
+      - "config/**"
+      - "src/**"
+      - ".github/workflows/monitor.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: leonida-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install monitor
+        run: pip install -e .
+      - name: Run monitor
+        env:
+          GITHUB_TOKEN: ${{ secrets.LEONIDA_MONITOR_TOKEN || secrets.GITHUB_TOKEN }}
+          LEONIDA_LOG_LEVEL: INFO
+        run: |
+          if [ "${{ inputs.bootstrap }}" = "true" ]; then
+            python -m leonida_monitor --bootstrap
+          else
+            python -m leonida_monitor
+          fi
+      - name: Commit state and reports
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md CHANGELOG.md state/ reports/ logs/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(monitor): update intelligence state and reports"
+            git push
+          fi
